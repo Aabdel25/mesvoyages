@@ -21,7 +21,7 @@ class Visite
     private ?string $pays = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
-    private ?DateTime $datecreation = null;
+    private ?\DateTime $datecreation = null;
 
     #[ORM\Column(nullable: true)]
     private ?int $note = null;
@@ -122,5 +122,14 @@ class Visite
         $this->tempmax = $tempmax;
 
         return $this;
+    }
+    
+    public function getDatecreationString(): string
+    {
+        if($this->datecreation == null){
+            return "";
+        }else{
+            return $this->datecreation->format('d/m/Y');
+        }
     }
 }
