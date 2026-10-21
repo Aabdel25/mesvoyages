@@ -15,6 +15,20 @@ use Symfony\Component\Routing\Attribute\Route;
  */
 class VoyagesController extends AbstractController {
     
+    /**
+     * 
+     * @var VisiteRepository
+     */
+    private $repository;
+    
+    /**
+     * 
+     * @param VisiteRepository $repository
+     */
+    public function __construct(VisiteRepository $repository) {
+        $this->repository = $repository;
+    }
+    
     #[Route('/voyages', name : 'voyages')]
     public function index(): Response{
         $visites = $this->repository->findAllOrderBy('datecreation','DESC');
@@ -31,6 +45,14 @@ class VoyagesController extends AbstractController {
         ]);
     }
     
+    #[Route('/voyages/voyage/{id}', name: 'voyages.showone')]
+    public function showOne($id) : Response{
+        $visite = $this->repository->find($id);
+        return $this->render("pages/voyage.html.twig", [
+            'visite' => $visite
+        ]);
+    }
+    
     #[Route('/voyages/recherche/{champ}', name: 'voyages.findallequal')]
     public function findAllEqual($champ, Request $request): Response{
         $valeur = $request->get("recherche");
@@ -38,19 +60,6 @@ class VoyagesController extends AbstractController {
         return $this->render("pages/voyages.html.twig", [
             'visites' => $visites
         ]);
-    }
-    
-    /**
-     * 
-     * @var VisiteRepository
-     */
-    private $repository;
-    
-    /**
-     * 
-     * @param VisiteRepository $repository
-     */
-    public function __construct(VisiteRepository $repository) {
-        $this->repository = $repository;
+        
     }
 }
