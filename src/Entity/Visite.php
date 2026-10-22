@@ -57,7 +57,7 @@ class Visite
         return $this->pays;
     }
 
-    public function setPays(?\DateTime $pays): static
+    public function setPays(string $pays): static
     {
         $this->pays = $pays;
 
