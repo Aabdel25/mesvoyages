@@ -1,5 +1,43 @@
 {% extends "basefront.html.twig" %}
 
 {% block body %}
-    <h1>Page d'accueil</h1>
+    <h1>Bienvenue sur mon site personnel de présentation de mes voyages.</h1>
+    
+    <p>Dans la partie <a href="{{ path('voyages') }}">Voyages</a>, vous pouvez voir la liste des visites que j'ai faites dans différentes villes.</p>
+    <p>A chaque fois j'ai précisé la ville visitée, le pays, j'ai mis une note (entre 0 et 20) et il y a aussi la date de la visite.</p>
+    <p>Vous pouvez trier la liste en fonction des villes, des pays, des notes et des dates, aussi bien dans l'ordre croissant que décroissant.</p>
+    <p>Vous pouvez aussi filtrer les visites par rapport à une ville ou un pays.</p>
+    <p>En cliquant sur la ville de la visite, vous pourrez avoir plus d'informations dessus : températures min et max, une description de la visite, les environnements (montagne, mer, désert...) et une photo.</p>
+    <p>Enfin, vous pouvez me contacter avec le formulaire de <a href="{{ path('contact') }}">Contact</a>.</p>
+
+    <h2 class="mt-4">Voici mes 2 derniers voyages :</h2>
+
+    <div class="row">
+        {% for visite in visites %}
+            <div class="col">
+                <div class="row">
+                    <div class="col-6">
+                        <!-- Emplacement de l'image (si tu gères les images, sinon un bloc vide ou l'image de la visite) -->
+                        <img src="{{ asset('images/visites/' ~ visite.imageName) }}" alt="" class="img-fluid">
+                    </div>
+                    <div class="col-6">
+                        <p class="text-muted mb-1">{{ visite.datecreation|date('d/m/Y') }}</p>
+                        <h4>
+                            <a href="{{ path('voyages.showone', {id: visite.id}) }}">
+                                {{ visite.ville }}
+                            </a>
+                        </h4>
+                        <p class="text-muted">{{ visite.pays }}</p>
+                        <p class="mb-1"><strong>{{ visite.note }}/20</strong></p>
+                        <p class="mb-1">t° entre {{ visite.tempmin }}° et {{ visite.tempmax }}°</p>
+                        <p class="mb-1"><strong>Environnements :</strong> 
+                            {% for environnement in visite.environnements %}
+                                {{ environnement.nom }}
+                            {% endfor %}
+                        </p>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
 {% endblock %}
