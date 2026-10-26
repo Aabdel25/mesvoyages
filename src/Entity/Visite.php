@@ -3,14 +3,16 @@
 namespace App\Entity;
 
 use App\Repository\VisiteRepository;
+use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use Vich\UploaderBundle\Mapping\Annotation as Vich;
+use DateTimeImmutable;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 #[ORM\Entity(repositoryClass: VisiteRepository::class)]
 #[Vich\Uploadable]
@@ -28,7 +30,8 @@ class Visite
     private ?string $pays = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
-    private ?\DateTime $datecreation = null;
+    #[Assert\LessThanOrEqual(value : "now")]
+    private ?DateTime $datecreation = null;
 
     #[ORM\Column(nullable: true)]
     #[Assert\Range(min: 0, max: 20)]
@@ -74,7 +77,7 @@ class Visite
     private ?int $imageSize = null;
 
     #[ORM\Column(nullable: true)]
-    private ?\DateTimeImmutable $updatedAt = null;
+    private ?DateTimeImmutable $updatedAt = null;
 
     /**
      * @var Collection<int, Environnement>
@@ -116,12 +119,12 @@ class Visite
         return $this;
     }
 
-    public function getDatecreation(): ?\DateTime
+    public function getDatecreation(): ?DateTime
     {
         return $this->datecreation;
     }
 
-    public function setDatecreation(?\DateTime $datecreation): static
+    public function setDatecreation(?DateTime $datecreation): static
     {
         $this->datecreation = $datecreation;
 
@@ -224,7 +227,7 @@ class Visite
     public function setImageFile(?File $imageFile): void {
         $this->imageFile = $imageFile;
         if(null != $imageFile) {
-            $this->updatedAt = new \DateTimeImmutable();
+            $this->updatedAt = new DateTimeImmutable();
         }
     }
 

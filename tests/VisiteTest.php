@@ -7,6 +7,7 @@
 
 namespace App\Tests;
 
+use App\Entity\Environnement;
 use App\Entity\Visite;
 use PHPUnit\Framework\TestCase;
 
@@ -21,5 +22,14 @@ class VisiteTest extends TestCase {
         $visite = new Visite();
         $visite->setDatecreation(new \DateTime("2024-04-24"));
         $this->assertEquals("24/04/2024", $visite->getDatecreationString());
+    }
+    
+    public function testAddEnvironnement(){
+        $visite = new Visite();
+        $environnement = new Environnement();
+        $environnement->setNom("Montagne");
+        $visite->addEnvironnement($environnement);
+        $visite->addEnvironnement($environnement);
+        $this->assertCount(1, $visite->getEnvironnements(), "le Test : Ajouter un environnment déja présent devraît échouer");
     }
 }
