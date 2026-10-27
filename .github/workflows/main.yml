@@ -15,3 +15,4 @@ jobs:
         server-dir: /www/mesvoyages/
         username: mesvoyagescned
         password: ${{ secrets.ftp_password }}
+        protocol: ftps
